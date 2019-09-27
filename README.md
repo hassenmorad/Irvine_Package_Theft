@@ -1,5 +1,6 @@
 # Irvine Package Theft
-Analysis of reported package thefts in Irvine, CA (2011-2019)
-Here is a time-lapse video of reported package theft plotted by month: https://youtu.be/a6sYRXIeFhY
+Analysis of reported package thefts, as well as vehicle & garage burglary in Irvine, CA (2011-2019)
 
-*The next iteration of this project will plot theft incidents via Mapbox and also include data on mail theft, garage burglary, and car break ins.
+*I created an interactive map that allows users to look for correlations & patterns between these different categories of petty theft- [Map](https://hassenmorad.github.io/irvine.html)
+
+*This is the first iteration of this project, created with matplotlib (a time-lapse video of reported package theft plotted by month): https://youtu.be/a6sYRXIeFhY
