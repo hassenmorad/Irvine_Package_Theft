@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8' />
+  <title>Irvine Theft</title>
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <script src='https://api.mapbox.com/mapbox-gl-js/v1.2.0/mapbox-gl.js'></script>
+  <link href='https://api.mapbox.com/mapbox-gl-js/v1.2.0/mapbox-gl.css' rel='stylesheet' />
+ 
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Helvetica Neue', Helvetica, Arial, Sans-serif;
+    }
+  
+    #map {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+    }
+  
+    h1 {
+      font-size: 20px;
+      line-height: 20px;
+    }
+  
+    h2 {
+      font-size: 14px;
+      line-height: 20px;
+      margin-bottom: 10px;
+    }
+  
+    a {
+      text-decoration: none;
+      color: #2dc4b2;
+    }
+  
+    #console {
+      position: absolute;
+      width: 280px;
+      margin: 10px;
+      padding: 10px 20px;
+      background-color: white;
+    }
+
+    #legend {
+      position: absolute;
+      padding: 10px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      line-height: 18px;
+      height: 100px;
+      width: 140px;
+      bottom: 40px;
+      left:10px;
+    }
+
+    .session {
+      margin-bottom: 20px;
+    }
+
+    .year {
+      margin-bottom: 80px;
+      width: 92%;
+    }
+
+    .row {
+      height: 12px;
+      width: 100%;
+    }
+
+    .label {
+      width: 15%;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .map-overlay {
+      bottom: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.8);
+      margin-right: 20px;
+      font-family: Arial, sans-serif;
+      overflow: auto;
+      border-radius: 3px;
+    }
+
+    .legend-title {
+      margin: 5px 0px;
+    }
+
+    .legend-key {
+      display: inline-block;
+      border-radius: 20%;
+      width: 10px;
+      height: 10px;
+      margin-right: 5px;
+      }
+
+  </style>
+</head>
+ 
+<body>
+ <div id='map'></div>
+ <div id='console'>
+   <h1>Irvine Theft</h1>
+   <div class='year'>
+       <h2>Year</h2>
+
+       <div class='row' id='filters'>
+         <input id='year1' type='radio' name='toggle' value='2011' checked='checked'>
+         <label for='year'>2011</label>
+         <input id='year2' type='radio' name='toggle' value='2012'>
+         <label for='year'>2012</label>
+         <input id='year3' type='radio' name='toggle' value='2013'>
+         <label for='year'>2013</label>
+         <input id='year4' type='radio' name='toggle' value='2014'>
+         <label for='year'>2014</label>
+         <input id='year5' type='radio' name='toggle' value='2015'>
+         <label for='year'>2015</label>
+         <input id='year6' type='radio' name='toggle' value='2016'>
+         <label for='year'>2016</label>
+         <input id='year7' type='radio' name='toggle' value='2017'>
+         <label for='year'>2017</label>
+         <input id='year8' type='radio' name='toggle' value='2018'>
+         <label for='year'>2018</label>
+         <input id='year9' type='radio' name='toggle' value='2019'>
+         <label for='year'>2019</label>
+       </div>
+     </div>
+
+   <div class='session' id='sliderbar'>
+       <h2>Week: <label id='week-num'>1</label></h2>
+       <input id='slider' class='row' type='range' min='1' max='52' step='1' value='1' />
+    </div>
+
+ </div>
+
+ <div class='map-overlay' id='legend'></div>
+ 
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoiaGFzc2VubW9yYWQiLCJhIjoiY2p5NmR4ejNhMDcyMjNmbzh5NzF4ODFmbCJ9.fZkFuUqq--PXmY_w7iCOdw';
+
+var map = new mapboxgl.Map({
+  container: 'map', // container element id
+  style: 'mapbox://styles/hassenmorad/cjzx35hi81dfq1crxatmw8lzs'
+  });
+
+var years = [2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019]
+function filterBy(year) {
+  var filters = ['==', 'Year', year];
+  map.setFilter('irvine_theft', filters);
+}
+ 
+map.on('load', function() {
+  var filterWeek = ['==', ['number', ['get', 'Week_Num']], 1];
+  var filterYear = ['==', ['number', ['get', 'Year']], 2011];
+
+  var layers = ['Vehicle Burglary', 'Garage Burglary', 'Package Theft'];
+  var colors = ['#a7023e', '#14adb8', '#a0bd00'];
+
+  // Legend 
+  var legend_title = document.createElement('h3');
+  var legend_text = document.createTextNode('Theft Type:');
+  legend_title.appendChild(legend_text);
+  legend_title.className = 'legend-title';
+  legend.appendChild(legend_title);
+
+  for (i = 0; i < layers.length; i++) {
+      var layer = layers[i];
+      var color = colors[i];
+      var item = document.createElement('div');
+      var key = document.createElement('span');
+      key.className = 'legend-key';
+      key.style.backgroundColor = color;
+
+      var value = document.createElement('span');
+      value.innerHTML = layer;
+      item.appendChild(key);
+      item.appendChild(value);
+      legend.appendChild(item);
+  }
+
+  map.addLayer({
+    id: 'irvine_theft',
+    type: 'circle',
+    source: {
+    type: 'geojson',
+    data: './irvine_thefts_final.geojson'
+    },
+    paint: {'circle-color': [ 'step', ['get', 'Thefttype'],
+      '#ffffff',
+      0, '#a7023e',
+      1, '#a0bd00',
+      2, '#14adb8'
+    ],
+      'circle-opacity': 0.8
+    },
+    filter: ['all', filterWeek, filterYear]
+      });
+  
+    document.getElementById('slider').addEventListener('input', function(e) {
+      var week = parseInt(e.target.value);
+      filterWeek = ['==', ['number', ['get', 'Week_Num']], week]
+      map.setFilter('irvine_theft', ['all', filterWeek, filterYear]);
+
+      // update text in the UI
+      document.getElementById('week-num').innerText = week;
+    });
+
+    document.getElementById('filters').addEventListener('change', function(e) {
+      var year = parseInt(e.target.value);
+      filterYear = ['==', ['number', ['get', 'Year']], year]
+      map.setFilter('irvine_theft', ['all', filterWeek, filterYear]);
+      
+    });
+
+    // Displays theft info when clicked
+    map.on('click', function(e) {
+    var features = map.queryRenderedFeatures(e.point, {
+        layers: ['irvine_theft'] 
+    });
+
+    if (!features.length) {
+        return;
+    }
+
+    var feature = features[0];
+
+    var popup = new mapboxgl.Popup({ offset: [0, -15] })
+        .setLngLat(feature.geometry.coordinates)
+        .setHTML('<p><strong>Date: </strong> ' + feature.properties.Date + '</p><p><strong>Type: </strong>' + feature.properties.Type + ' Theft</p>')
+        .addTo(map);
+    });
+});
+</script>
+ 
+</body>
+</html>
