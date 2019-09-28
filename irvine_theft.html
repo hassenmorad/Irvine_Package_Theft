@@ -189,7 +189,7 @@ map.on('load', function() {
     type: 'geojson',
     data: './irvine_thefts_final.geojson'
     },
-    paint: {'circle-color': [ 'step', ['get', 'Thefttype'],
+    paint: {'circle-color': [ 'step', ['get', 'Type_Num'],
       '#ffffff',
       0, '#a7023e',
       1, '#a0bd00',
