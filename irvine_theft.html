@@ -157,7 +157,7 @@ map.on('load', function() {
   var filterWeek = ['==', ['number', ['get', 'Week_Num']], 1];
   var filterYear = ['==', ['number', ['get', 'Year']], 2011];
 
-  var layers = ['Vehicle Burglary', 'Garage Burglary', 'Package Theft'];
+  var layers = ['Vehicle Theft', 'Garage Burglary', 'Package Theft'];
   var colors = ['#a7023e', '#14adb8', '#a0bd00'];
 
   // Legend 
@@ -230,7 +230,7 @@ map.on('load', function() {
 
     var popup = new mapboxgl.Popup({ offset: [0, -15] })
         .setLngLat(feature.geometry.coordinates)
-        .setHTML('<p><strong>Date: </strong> ' + feature.properties.Date + '</p><p><strong>Type: </strong>' + feature.properties.Type + ' Theft</p>')
+        .setHTML('<p><strong>Date: </strong> ' + feature.properties.Date + '</p><p><strong>Theft: </strong>' + feature.properties.Type + '</p>')
         .addTo(map);
     });
 });
