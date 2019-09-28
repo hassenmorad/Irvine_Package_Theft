@@ -1,5 +1,5 @@
 # Irvine Package Theft
-This repository contains all files used in analyzing petty theft (package, vehicle, garage) in Irivne, CA (2011-2019). The result is an [interactive map](https://hassenmorad.github.io/irvine.html) that allows users to look for general patterns and correlations between these different categories of theft.
+This repository contains all files used in analyzing petty theft (package, vehicle, garage) in Irivne, CA (2011-2019). The result is an **[interactive map](https://hassenmorad.github.io/irvine.html)** that allows users to look for general patterns and correlations between these different categories of theft.
 
 *The first iteration of this project (Irvine Theft Mapping.ipynb) was a [time-lapse video](https://youtu.be/a6sYRXIeFhY). It was created from images of monthly package theft incidents plotted via matplotlib.
 
